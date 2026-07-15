@@ -6,9 +6,9 @@
     <title>Spherical Harmonics</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Public+Sans:ital,wght@0,400..700;1,400..700&family=Spline+Sans+Mono:wght@400..600&display=swap" rel="stylesheet">
     <meta name="description" content="Free, open-source platform for community-driven street redesign. Propose and vote on bike lanes, sidewalks, and greenways in your neighborhood.">
-    <meta name="theme-color" content="#a86b3c">
+    <meta name="theme-color" content="#faf3e5">
     <meta property="og:title" content="Spherical Harmonics">
     <meta property="og:description" content="Free, open-source platform for community-driven street redesign.">
     <meta property="og:type" content="website">
@@ -18,336 +18,668 @@
     <link rel="icon" type="image/png" href="favicon.png?v=2">
     <link rel="icon" type="image/x-icon" href="favicon.ico?v=2">
     <style>
+        :root {
+            --paper: #faf3e5;
+            --paper-deep: #f2e7d2;
+            --ink: #231a0f;
+            --ink-soft: #5c4f3b;
+            --sienna: #a86b3c;
+            --sienna-deep: #7e4a20;
+            --lane-green: #3f7a38;
+            --road-yellow: #f2c230;
+            --hairline: rgba(35, 26, 15, 0.25);
+            --serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+            --sans: 'Public Sans', -apple-system, 'Helvetica Neue', sans-serif;
+            --mono: 'Spline Sans Mono', 'SF Mono', Menlo, monospace;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.6;
-            color: #333;
+            font-family: var(--sans);
+            line-height: 1.65;
+            color: var(--ink);
+            background: var(--paper);
+        }
+
+        ::selection {
+            background: var(--road-yellow);
+            color: var(--ink);
         }
 
         :focus-visible {
-            outline: 2px solid rgb(168, 107, 60);
+            outline: 2px solid var(--sienna-deep);
             outline-offset: 2px;
         }
 
-        header {
-            position: relative;
-            color: #fff;
-            padding: 1.5rem 1rem;
+        body {
+            border-top: 4px solid var(--ink);
+        }
+
+        /* ---------- Masthead ---------- */
+        .masthead {
             text-align: center;
-            overflow: hidden;
-            min-height: 200px;
+            padding: 1.1rem 1.25rem 0.9rem;
+        }
+
+        .masthead-lockup {
             display: flex;
             align-items: center;
             justify-content: center;
+            gap: 1.25rem;
         }
 
-        .header-banner {
-            position: absolute;
-            inset: 0;
-            z-index: 0;
-        }
-
-        .header-banner img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
-        .header-overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(40, 25, 15, 0.3);
-            z-index: 1;
-        }
-
-        .logo-halo {
-            position: absolute;
-            top: -35px;
-            bottom: -35px;
-            left: 50%;
-            width: 700px;
-            transform: translateX(-50%);
-            background: linear-gradient(to right, transparent 0%, rgba(230, 230, 230, 0.5) 20%, rgba(230, 230, 230, 1) 40%, rgba(230, 230, 230, 1) 60%, rgba(230, 230, 230, 0.5) 80%, transparent 100%);
-            filter: blur(35px);
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        .header-content {
-            position: relative;
-            z-index: 2;
-        }
-
-        .header-content h1 {
-            color: rgb(168, 107, 60);
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .donate-btn {
-            display: inline-block;
-            background: rgb(168, 107, 60);
-            color: white;
-            padding: 0.7rem 1.5rem;
-            border-radius: 6px;
-            text-decoration: none;
-            font-family: 'Playfair Display', Georgia, 'Times New Roman', Times, serif;
-            font-weight: 500;
-            font-size: 1.1rem;
-            margin-top: 1rem;
-            transition: background 0.3s ease;
-        }
-
-        .donate-btn:hover {
-            background: rgb(138, 87, 45);
-        }
-
-        .logo {
-            position: relative;
-            z-index: 1;
-            max-width: 140px;
+        .masthead .logo {
+            width: 72px;
             height: auto;
-            margin-bottom: 1rem;
+            filter: drop-shadow(0 6px 12px rgba(35, 26, 15, 0.18));
         }
 
-        h1, h2, .subtitle {
-            font-family: 'Playfair Display', Georgia, 'Times New Roman', Times, serif;
-            font-weight: 300;
-        }
-
-        h1 {
-            font-size: 2.2rem;
-            margin-bottom: 0.5rem;
-            font-weight: 300;
+        .masthead h1 {
+            font-family: var(--serif);
+            font-optical-sizing: auto;
+            font-size: clamp(2.1rem, 6vw, 3.6rem);
+            font-weight: 420;
+            letter-spacing: -0.015em;
+            line-height: 1.05;
             text-wrap: balance;
         }
 
-        .subtitle {
-            font-size: 1.5rem;
-            font-weight: 300;
-            opacity: 0.85;
-        }
-
-        .demo-banner {
-            background: rgb(168, 107, 60);
-            padding: 0.8rem 1.5rem;
-            text-align: center;
-        }
-
-        .demo-banner a {
-            color: white;
-            font-family: 'Playfair Display', Georgia, 'Times New Roman', Times, serif;
-            font-size: 1.1rem;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .demo-banner a:hover {
-            text-decoration: underline;
-        }
-
-        .container {
-            max-width: 900px;
+        .double-rule {
+            max-width: 1080px;
             margin: 0 auto;
-            padding: 3rem 1.5rem;
+            border-top: 3px solid var(--ink);
+            border-bottom: 1px solid var(--ink);
+            height: 7px;
         }
 
-        section {
-            margin-bottom: 3rem;
+        .rule-wrap {
+            padding: 0 1.25rem;
         }
 
-        h2 {
-            font-size: 1.8rem;
-            color: rgb(168, 107, 60);
-            margin-bottom: 1rem;
-            border-bottom: 2px solid rgb(168, 107, 60);
-            padding-bottom: 0.5rem;
-            font-weight: 300;
+        /* ---------- Section nav ---------- */
+        .section-nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.25rem 2.25rem;
+            padding: 0.7rem 1.25rem;
+            border-bottom: 1px solid var(--hairline);
+            font-family: var(--mono);
+            font-size: 0.74rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
         }
 
-        p {
-            font-size: 1.1rem;
-            margin-bottom: 1rem;
-            text-align: justify;
-        }
-
-        .contact {
-            background: #f7f7f7;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin-top: 2rem;
-        }
-
-        .contact a {
-            color: rgb(168, 107, 60);
+        .section-nav a {
+            color: var(--ink);
             text-decoration: none;
+            padding: 0.15rem 0;
+            border-bottom: 2px solid transparent;
+        }
+
+        .section-nav a:hover {
+            border-bottom-color: var(--road-yellow);
+        }
+
+        .section-nav a.nav-donate {
+            background: var(--road-yellow);
+            font-weight: 600;
+            padding: 0.15rem 0.7rem;
+            border: 1px solid var(--ink);
+            box-shadow: 2px 2px 0 var(--ink);
+            transition: box-shadow 0.15s ease, transform 0.15s ease;
+        }
+
+        .section-nav a.nav-donate:hover {
+            transform: translate(1px, 1px);
+            box-shadow: 1px 1px 0 var(--ink);
+            border-bottom-color: var(--ink);
+        }
+
+        /* ---------- Lead art ---------- */
+        .lead-art {
+            margin: 0;
+        }
+
+        .lead-art img {
+            display: block;
+            width: 100%;
+            height: clamp(240px, 42vw, 460px);
+            object-fit: cover;
+        }
+
+        /* ---------- Demo bar ---------- */
+        .demo-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.6rem 1rem;
+            background: var(--ink);
+            color: var(--paper);
+            text-decoration: none;
+            padding: 0.85rem 1.25rem;
+        }
+
+        .demo-bar .chip {
+            font-family: var(--mono);
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            background: var(--road-yellow);
+            color: var(--ink);
+            padding: 0.18rem 0.6rem;
+        }
+
+        .demo-bar .demo-line {
+            font-family: var(--serif);
+            font-size: 1.15rem;
+            font-weight: 450;
+        }
+
+        .demo-bar .demo-arrow {
+            transition: transform 0.2s ease;
+            display: inline-block;
+        }
+
+        .demo-bar:hover .demo-arrow {
+            transform: translateX(5px);
+        }
+
+        /* ---------- Sections ---------- */
+        .container {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 2.25rem 1.25rem 0.5rem;
+        }
+
+        section.story {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 1.25rem 3rem;
+            border-top: 3px solid var(--ink);
+            padding-top: 0.85rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .kicker {
+            font-family: var(--mono);
+            font-size: 0.74rem;
+            font-weight: 600;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--sienna-deep);
+        }
+
+        .story h2 {
+            font-family: var(--serif);
+            font-optical-sizing: auto;
+            font-size: clamp(1.7rem, 3.4vw, 2.4rem);
+            font-weight: 450;
+            line-height: 1.15;
+            letter-spacing: -0.01em;
+            margin-bottom: 1.1rem;
+            text-wrap: balance;
+        }
+
+        .story p {
+            font-size: 1.06rem;
+            max-width: 62ch;
+            margin-bottom: 1rem;
+        }
+
+        .story p:last-child {
+            margin-bottom: 0;
+        }
+
+        p.drop::first-letter {
+            font-family: var(--serif);
+            font-weight: 500;
+            font-size: 3.4em;
+            float: left;
+            line-height: 0.82;
+            padding: 0.08em 0.12em 0 0;
+            color: var(--sienna);
+        }
+
+        .story a:not(.btn) {
+            color: var(--lane-green);
+            font-weight: 600;
+            text-decoration: none;
+            border-bottom: 2px solid rgba(63, 122, 56, 0.35);
+        }
+
+        .story a:not(.btn):hover {
+            border-bottom-color: var(--road-yellow);
+            background: rgba(242, 194, 48, 0.25);
+        }
+
+        /* Demo card */
+        .demo-card {
+            border: 1px solid var(--ink);
+            border-left: 6px solid var(--lane-green);
+            background: var(--paper-deep);
+            padding: 1.5rem 1.75rem;
+            box-shadow: 4px 4px 0 rgba(35, 26, 15, 0.14);
+        }
+
+        .demo-card p {
+            max-width: none;
+        }
+
+        .btn {
+            display: inline-block;
+            font-family: var(--mono);
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            text-decoration: none;
+            padding: 0.7rem 1.3rem;
+            border: 1px solid var(--ink);
+            transition: box-shadow 0.15s ease, transform 0.15s ease;
+        }
+
+        .btn-primary {
+            background: var(--sienna);
+            color: #fff;
+            box-shadow: 3px 3px 0 var(--ink);
+            margin-top: 0.75rem;
+        }
+
+        .btn-primary:hover {
+            transform: translate(1px, 1px);
+            box-shadow: 2px 2px 0 var(--ink);
+        }
+
+        /* People */
+        .people-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .person {
+            border-top: 1px solid var(--hairline);
+            padding-top: 0.9rem;
+        }
+
+        .person h3 {
+            font-family: var(--serif);
+            font-size: 1.3rem;
             font-weight: 500;
         }
 
-        .contact a:hover {
-            text-decoration: underline;
+        .person .role {
+            font-family: var(--mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--sienna-deep);
+            margin: 0.2rem 0 0.6rem;
         }
 
-        .demo-section {
-            background: #faf6f2;
-            padding: 1.5rem;
-            border-left: 4px solid rgb(168, 107, 60);
-            border-radius: 4px;
+        .person p {
+            font-size: 0.98rem;
+            color: var(--ink-soft);
         }
 
-        .demo-section a {
-            color: rgb(168, 107, 60);
-            font-weight: 500;
+        .contact-note {
+            font-size: 1rem;
+            border-top: 1px solid var(--hairline);
+            padding-top: 1rem;
         }
 
-        .demo-section a:hover {
-            text-decoration: underline;
+        /* Funding note */
+        .funding-note {
+            text-align: center;
+            max-width: 620px;
+            margin: 0 auto 2.5rem;
+            padding: 0 1.25rem;
         }
 
-        .funding {
-            background: #fff9e6;
-            padding: 1.5rem;
-            border-left: 4px solid #ffc107;
-            border-radius: 4px;
-            margin-top: 2rem;
+        .funding-note p {
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: 1.05rem;
+            color: var(--ink-soft);
         }
 
-        .image-gallery {
-            margin-top: 3rem;
-            padding: 2rem 0;
-            background: #fafafa;
+        .funding-note strong {
+            color: var(--ink);
+            font-weight: 550;
+        }
+
+        /* ---------- Gallery ---------- */
+        .gallery {
+            background: var(--paper-deep);
+            border-top: 1px solid var(--hairline);
+            padding: 2rem 0 2.5rem;
+        }
+
+        .gallery-inner {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 1.25rem;
+        }
+
+        .gallery-head {
+            border-top: 3px solid var(--ink);
+            padding-top: 0.85rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .gallery-head h2 {
+            font-family: var(--serif);
+            font-size: clamp(1.7rem, 3.4vw, 2.4rem);
+            font-weight: 450;
         }
 
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 1.5rem;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.25rem;
+        }
+
+        .gallery-grid figure {
+            margin: 0;
         }
 
         .gallery-grid img {
             width: 100%;
-            height: 250px;
+            height: 240px;
             object-fit: cover;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
+            display: block;
+            border: 1px solid var(--ink);
+            filter: saturate(0.92);
+            transition: filter 0.25s ease;
         }
 
-        .gallery-grid img:hover {
-            transform: scale(1.05);
+        .gallery-grid figure:hover img {
+            filter: saturate(1.1);
         }
 
+        .gallery-grid figcaption {
+            font-family: var(--mono);
+            font-size: 0.68rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--ink-soft);
+            padding-top: 0.4rem;
+        }
+
+        /* ---------- Footer ---------- */
         footer {
-            text-align: center;
-            padding: 2rem;
-            background: #333;
-            color: white;
-            margin-top: 3rem;
+            background: var(--ink);
+            color: var(--paper);
+            padding: 2rem 1.25rem 1.5rem;
         }
 
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2rem;
+        .footer-inner {
+            max-width: 1080px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .footer-inner .wordmark {
+            font-family: var(--serif);
+            font-size: 1.6rem;
+            font-weight: 450;
+        }
+
+        .footer-inner .foot-tag {
+            font-size: 0.9rem;
+            color: rgba(250, 243, 229, 0.65);
+            max-width: 34ch;
+            margin-top: 0.4rem;
+        }
+
+        .foot-head {
+            font-family: var(--mono);
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--road-yellow);
+            margin-bottom: 0.6rem;
+        }
+
+        footer a {
+            color: var(--paper);
+            text-decoration: none;
+            border-bottom: 1px solid rgba(250, 243, 229, 0.35);
+        }
+
+        footer a:hover {
+            border-bottom-color: var(--road-yellow);
+        }
+
+        footer li {
+            list-style: none;
+            font-size: 0.92rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .copyright {
+            max-width: 1080px;
+            margin: 1.75rem auto 0;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(250, 243, 229, 0.2);
+            font-family: var(--mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: rgba(250, 243, 229, 0.55);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        /* ---------- Responsive ---------- */
+        @media (max-width: 900px) {
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
 
-            .subtitle {
-                font-size: 1.2rem;
+            .footer-inner {
+                grid-template-columns: 1fr 1fr;
             }
+        }
 
+        @media (max-width: 880px) {
+            section.story {
+                grid-template-columns: 1fr;
+                gap: 0.9rem;
+            }
+        }
+
+        @media (max-width: 620px) {
+            .people-grid {
+                grid-template-columns: 1fr;
+                gap: 1.25rem;
+            }
+        }
+
+        @media (max-width: 540px) {
             .gallery-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .footer-inner {
+                grid-template-columns: 1fr;
+            }
+
+            .masthead-lockup {
+                gap: 0.8rem;
+            }
+
+            .masthead .logo {
+                width: 52px;
+            }
+
+            .demo-bar .demo-line {
+                font-size: 1.02rem;
+                text-align: center;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            *, *::before, *::after {
+                transition: none !important;
             }
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="header-banner">
-            <img src="banner.png" alt="City street redesign concept">
-        </div>
-        <div class="header-overlay"></div>
-        <div class="logo-halo"></div>
-        <div class="header-content">
-            <img src="logo_header.png" alt="Spherical Harmonics Logo" class="logo">
+    <header class="masthead">
+        <div class="masthead-lockup">
+            <img src="logo_header.png" alt="Spherical Harmonics logo: a carved wooden sphere with a brass harmonica at its equator" class="logo">
             <h1>Spherical Harmonics</h1>
-            <a href="https://donorbox.org/support-spherical-harmonics" class="donate-btn">Donate Now</a>
         </div>
     </header>
 
-    <div class="demo-banner">
-        <a href="https://demo.cityedit.org/">Try the City Edit Demo &rarr;</a>
-    </div>
+    <div class="rule-wrap"><div class="double-rule"></div></div>
 
-    <div class="container">
-        <section>
-            <h2>Our Mission</h2>
-            <p>
-                Communities know their streets need change but have no way to independently create the technical maps that city planners need to move projects forward.
-            </p>
-            <p>
-                We're developing a free and open-source platform where community members can propose and vote on bike lane, sidewalk, roadway, parking, and greenway improvements following NYC Street Design Manual guidelines.
-            </p>
-            <p>
-                Each proposal generates downloadable design drawings and maps from community-driven input that anyone can submit to DOT, share with community boards, or use for local organizing.
-            </p>
-        </section>
+    <nav class="section-nav" aria-label="Sections">
+        <a href="#mission">Mission</a>
+        <a href="#demo">City Edit</a>
+        <a href="#people">People</a>
+        <a href="#gallery">Gallery</a>
+        <a href="mailto:brook@sphericalharmonics.org">Contact</a>
+        <a class="nav-donate" href="https://donorbox.org/support-spherical-harmonics">Donate</a>
+    </nav>
 
-        <section>
-            <h2>Demo</h2>
-            <div class="demo-section">
+    <figure class="lead-art">
+        <img src="banner.png" alt="A redesigned city street with a protected green bike lane, wide planted sidewalk, and outdoor seating beside a wide arterial road">
+    </figure>
+
+    <a class="demo-bar" href="https://demo.cityedit.org/">
+        <span class="chip">Live demo</span>
+        <span class="demo-line">City Edit &mdash; draw the street you want to see <span class="demo-arrow">&rarr;</span></span>
+    </a>
+
+    <main class="container">
+        <section class="story" id="mission">
+            <div class="kicker">Mission</div>
+            <div class="section-body">
+                <h2>Streets, redesigned by the people who use them</h2>
+                <p class="drop">
+                    Communities know their streets need change but have no way to independently create the technical maps that city planners need to move projects forward.
+                </p>
                 <p>
-                    <a href="https://demo.cityedit.org/">City Edit</a> is our interactive demo for community-driven street redesign. It lets users draw proposed infrastructure changes directly onto a map, placing bike lanes, sidewalks, greenways, and other streetscape elements on real city streets. Community members can sketch out the changes they want to see in their neighborhoods, vote on proposals from others, and generate shareable design maps that follow established urban planning guidelines. The tool turns local knowledge about where people actually walk, bike, and need safer infrastructure into the kind of technical visual proposals that city agencies can act on.
+                    We're developing a free and open-source platform where community members can propose and vote on bike lane, sidewalk, roadway, parking, and greenway improvements following NYC Street Design Manual guidelines.
+                </p>
+                <p>
+                    Each proposal generates downloadable design drawings and maps from community-driven input that anyone can submit to DOT, share with community boards, or use for local organizing.
                 </p>
             </div>
         </section>
 
-        <section>
-            <h2>About Us</h2>
-            <p>
-                <strong>Eric Bolton</strong> is a software engineer specializing in data visualization, collaborative platforms, and community consensus tools.
-            </p>
-            <p>
-                <strong>Brook Constantz</strong> is an urban ecologist with a background in forest restoration, geographic information systems, and green infrastructure.
-            </p>
-
-            <div class="contact">
-                <strong>Contact us:</strong> <a href="mailto:brook@sphericalharmonics.org">brook@sphericalharmonics.org</a>
+        <section class="story" id="demo">
+            <div class="kicker">Demo</div>
+            <div class="section-body">
+                <h2>City Edit: local knowledge, drawn to scale</h2>
+                <div class="demo-card">
+                    <p>
+                        <a href="https://demo.cityedit.org/">City Edit</a> is our interactive demo for community-driven street redesign. It lets users draw proposed infrastructure changes directly onto a map, placing bike lanes, sidewalks, greenways, and other streetscape elements on real city streets. Community members can sketch out the changes they want to see in their neighborhoods, vote on proposals from others, and generate shareable design maps that follow established urban planning guidelines. The tool turns local knowledge about where people actually walk, bike, and need safer infrastructure into the kind of technical visual proposals that city agencies can act on.
+                    </p>
+                    <a href="https://demo.cityedit.org/" class="btn btn-primary">Open the demo &rarr;</a>
+                </div>
             </div>
         </section>
 
-        <section>
-            <div class="funding">
-                <strong>Funding:</strong> This project is funded by a Magic Grant from the Brown Institute for Media Innovation, a joint initiative of Stanford Engineering and Columbia Journalism School.
+        <section class="story" id="people">
+            <div class="kicker">People</div>
+            <div class="section-body">
+                <h2>Who we are</h2>
+                <div class="people-grid">
+                    <div class="person">
+                        <h3>Eric Bolton</h3>
+                        <p class="role">Software Engineering</p>
+                        <p>Software engineer specializing in data visualization, collaborative platforms, and community consensus tools.</p>
+                    </div>
+                    <div class="person">
+                        <h3>Brook Constantz</h3>
+                        <p class="role">Urban Ecology</p>
+                        <p>Urban ecologist with a background in forest restoration, geographic information systems, and green infrastructure.</p>
+                    </div>
+                </div>
+                <p class="contact-note">
+                    <strong>Contact us:</strong> <a href="mailto:brook@sphericalharmonics.org">brook@sphericalharmonics.org</a> &middot; <a href="mailto:eric@sphericalharmonics.org">eric@sphericalharmonics.org</a>
+                </p>
             </div>
         </section>
+    </main>
+
+    <div class="funding-note">
+        <p>
+            This project is funded by a <strong>Magic Grant</strong> from the <strong>Brown Institute for Media Innovation</strong>, a joint initiative of Stanford Engineering and Columbia Journalism School.
+        </p>
     </div>
 
-    <div class="image-gallery">
-        <h2 style="text-align: center; margin-bottom: 2rem; color: rgb(168, 107, 60);">Photo Gallery</h2>
-        <div class="gallery-grid">
-            <img src="IMG_2981 2.jpg" alt="Project image 1" loading="lazy">
-            <img src="IMG_2987 2.jpg" alt="Project image 2" loading="lazy">
-            <img src="IMG_2990 2.jpg" alt="Project image 3" loading="lazy">
-            <img src="IMG_2992 2.jpg" alt="Project image 4" loading="lazy">
-            <img src="IMG_3002 2.jpg" alt="Project image 5" loading="lazy">
-            <img src="IMG_3019 2.jpg" alt="Project image 6" loading="lazy">
-            <img src="IMG_3025 2.jpg" alt="Project image 7" loading="lazy">
-            <img src="IMG_3036 2.jpg" alt="Project image 8" loading="lazy">
-            <img src="IMG_3071 2.jpg" alt="Project image 9" loading="lazy">
+    <div class="gallery" id="gallery">
+        <div class="gallery-inner">
+            <div class="gallery-head">
+                <h2>Gallery</h2>
+            </div>
+            <div class="gallery-grid">
+                <figure><img src="IMG_2981 2.jpg" alt="Project field photo 1" loading="lazy"><figcaption>Fig. 01</figcaption></figure>
+                <figure><img src="IMG_2987 2.jpg" alt="Project field photo 2" loading="lazy"><figcaption>Fig. 02</figcaption></figure>
+                <figure><img src="IMG_2990 2.jpg" alt="Project field photo 3" loading="lazy"><figcaption>Fig. 03</figcaption></figure>
+                <figure><img src="IMG_2992 2.jpg" alt="Project field photo 4" loading="lazy"><figcaption>Fig. 04</figcaption></figure>
+                <figure><img src="IMG_3002 2.jpg" alt="Project field photo 5" loading="lazy"><figcaption>Fig. 05</figcaption></figure>
+                <figure><img src="IMG_3019 2.jpg" alt="Project field photo 6" loading="lazy"><figcaption>Fig. 06</figcaption></figure>
+                <figure><img src="IMG_3025 2.jpg" alt="Project field photo 7" loading="lazy"><figcaption>Fig. 07</figcaption></figure>
+                <figure><img src="IMG_3036 2.jpg" alt="Project field photo 8" loading="lazy"><figcaption>Fig. 08</figcaption></figure>
+                <figure><img src="IMG_3071 2.jpg" alt="Project field photo 9" loading="lazy"><figcaption>Fig. 09</figcaption></figure>
+            </div>
         </div>
     </div>
 
     <footer>
-        <p>&copy; 2026 Spherical Harmonics Inc. All rights reserved.</p>
+        <div class="footer-inner">
+            <div>
+                <div class="wordmark">Spherical Harmonics</div>
+                <p class="foot-tag">A civic technology nonprofit building open tools for community-driven street redesign.</p>
+            </div>
+            <div>
+                <div class="foot-head">Get Involved</div>
+                <ul>
+                    <li><a href="https://demo.cityedit.org/">City Edit demo</a></li>
+                    <li><a href="https://donorbox.org/support-spherical-harmonics">Donate</a></li>
+                </ul>
+            </div>
+            <div>
+                <div class="foot-head">Contact</div>
+                <ul>
+                    <li><a href="mailto:brook@sphericalharmonics.org">brook@sphericalharmonics.org</a></li>
+                    <li><a href="mailto:eric@sphericalharmonics.org">eric@sphericalharmonics.org</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <span>&copy; 2026 Spherical Harmonics Inc. All rights reserved.</span>
+            <span>New York City</span>
+        </div>
     </footer>
+
 </body>
 </html>
