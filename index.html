@@ -15,6 +15,7 @@
     <meta property="og:url" content="https://sphericalharmonics.org">
     <meta property="og:image" content="https://sphericalharmonics.org/logo_sh_cropped.png">
     <meta name="twitter:card" content="summary">
+    <link rel="alternate" type="application/rss+xml" title="Spherical Harmonics newsletter" href="https://sphericalharmonics.substack.com/feed">
     <link rel="icon" type="image/png" href="favicon.png?v=2">
     <link rel="icon" type="image/x-icon" href="favicon.ico?v=2">
     <style>
@@ -302,6 +303,54 @@
             box-shadow: 2px 2px 0 var(--ink);
         }
 
+        /* Newsletter */
+        .post-card {
+            border: 1px solid var(--ink);
+            border-left: 6px solid var(--sienna);
+            background: var(--paper-deep);
+            padding: 1.25rem 1.5rem;
+            box-shadow: 4px 4px 0 rgba(35, 26, 15, 0.14);
+        }
+
+        .post-card .dateline {
+            font-family: var(--mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--sienna-deep);
+        }
+
+        .post-card h3 {
+            font-family: var(--serif);
+            font-size: clamp(1.25rem, 2.6vw, 1.6rem);
+            font-weight: 500;
+            line-height: 1.2;
+            margin: 0.25rem 0 0.4rem;
+            text-wrap: balance;
+        }
+
+        .story .post-card h3 a:not(.btn) {
+            color: var(--ink);
+            border-bottom: 2px solid rgba(168, 107, 60, 0.45);
+        }
+
+        .story .post-card h3 a:not(.btn):hover {
+            border-bottom-color: var(--road-yellow);
+        }
+
+        .post-card p {
+            max-width: none;
+            color: var(--ink-soft);
+        }
+
+        .archive-line {
+            font-family: var(--mono);
+            font-size: 0.74rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-top: 0.9rem;
+        }
+
         /* People */
         .people-grid {
             display: grid;
@@ -561,6 +610,7 @@
     <nav class="section-nav" aria-label="Sections">
         <a href="#mission">Mission</a>
         <a href="#demo">City Edit</a>
+        <a href="#newsletter">Newsletter</a>
         <a href="#people">People</a>
         <a href="#gallery">Gallery</a>
         <a href="mailto:brook@sphericalharmonics.org">Contact</a>
@@ -603,6 +653,26 @@
                     </p>
                     <a href="https://demo.cityedit.org/" class="btn btn-primary">Open the demo &rarr;</a>
                 </div>
+            </div>
+        </section>
+
+        <section class="story" id="newsletter">
+            <div class="kicker">Newsletter</div>
+            <div class="section-body">
+                <h2>Dispatches from the street</h2>
+                <p>
+                    We write about what we're building, what we're learning from neighbors, and what happens when you hand people the tools to redraw their own block. Read it on <a href="https://sphericalharmonics.substack.com/">Substack</a>.
+                </p>
+                <!-- LATEST-POST:START -->
+                <div class="post-card">
+                    <p class="dateline">Latest post &middot; August 5, 2026</p>
+                    <h3><a href="https://sphericalharmonics.substack.com/p/city-edit-first-edition">City Edit: First Edition</a></h3>
+                    <p>What happens when you tape a QR code to a lamppost?</p>
+                </div>
+                <!-- LATEST-POST:END -->
+                <p class="archive-line">
+                    <a href="https://sphericalharmonics.substack.com/archive">All posts</a> &middot; <a href="https://sphericalharmonics.substack.com/subscribe">Subscribe</a>
+                </p>
             </div>
         </section>
 
@@ -664,6 +734,7 @@
                 <div class="foot-head">Get Involved</div>
                 <ul>
                     <li><a href="https://demo.cityedit.org/">City Edit demo</a></li>
+                    <li><a href="https://sphericalharmonics.substack.com/">Newsletter</a></li>
                     <li><a href="https://donorbox.org/support-spherical-harmonics">Donate</a></li>
                 </ul>
             </div>
