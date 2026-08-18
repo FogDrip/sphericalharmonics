@@ -1,0 +1,24 @@
+name: TEMP token write test
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Report granted scopes
+        run: |
+          curl -sI -H "Authorization: token ${{ github.token }}" \
+            https://api.github.com/repos/${{ github.repository }} \
+            | grep -i "x-oauth-scopes\|x-accepted" || true
+      - name: Try to push a scratch branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b ci-write-test-scratch
+          echo "probe" > .ci-write-probe
+          git add .ci-write-probe
+          git commit -m "probe: can the workflow token push?"
+          git push origin ci-write-test-scratch --force
